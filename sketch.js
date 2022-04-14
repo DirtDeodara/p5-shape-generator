@@ -1,6 +1,6 @@
 const CRYSTAL_SIZE = 500
+const RADIUS = CRYSTAL_SIZE / 2
 const SIDES = 6
-let ANGLE
 let PALETTE = []
 
 function setup() {
@@ -17,31 +17,59 @@ function setup() {
 }
 
 function draw() {
-  testLines()
+  // simpleLines()
+  outlineShape()
+  circle()
 }
 
-function testLines() {
-  let numberOfShapes = coinFlip() ? SIDES : SIDES * 2
-
-  noFill()
+function outlineShape() {
+  stroke(randomColor())
+  strokeWeight(randomWeight())
   push()
-    translate(width / 2, height / 2)
-    stroke(PALETTE[0])
-    ellipse(0, 0, CRYSTAL_SIZE, CRYSTAL_SIZE)
-
-    stroke(randomColor())
-    ANGLE = 360 / numberOfShapes
-    for (let i = 0; i < numberOfShapes; i++) {
-      line(0, 0, 0, CRYSTAL_SIZE / 2)
-      rotate(ANGLE)
-    }
+  translate(width / 2, height / 2)
+  coinFlip() ? ellipse(0, 0, CRYSTAL_SIZE, CRYSTAL_SIZE) : hexagon(0, 0, RADIUS)
   pop()
 }
 
-function coinFlip() {
-  return random(1) < 0.5
+function simpleLines() {
+  const stepsOut = 8
+  const numOfSteps = coinFlip() ? stepsOut : floor(stepsOut * 1.25)
+  const step = RADIUS / numOfSteps
+  const start = floor(random(0, numOfSteps))
+  const stop = floor(random(start, numOfSteps + 1))
+
+  const numberOfShapes = coinFlip() ? SIDES : SIDES * 2
+  const angle = 360 / numberOfShapes
+
+  noFill()
+
+  push()
+  translate(width / 2, height / 2)
+  stroke(randomColor())
+  strokeWeight(randomWeight())
+
+  for (let i = 0; i < numberOfShapes; i++) {
+    line(start * step, 0, stop * step, 0)
+    rotate(angle)
+  }
+  pop()
 }
 
-function randomColor() {
-  return PALETTE[floor(random(0, PALETTE.length))]
+function circle() {
+  const numberOfShapes = coinFlip() ? SIDES : SIDES * 2
+  const angle = 360 / numberOfShapes
+  const sizeOfShape = RADIUS * 0.93
+  const position = RADIUS - sizeOfShape / 2
+
+  stroke(randomColor())
+  strokeWeight(randomWeight())
+  noFill()
+
+  push()
+  translate(width / 2, height / 2)
+  for (let i = 0; i < numberOfShapes; i++) {
+    ellipse(position, 0, sizeOfShape, sizeOfShape)
+    rotate(angle)
+  }
+  pop()
 }
