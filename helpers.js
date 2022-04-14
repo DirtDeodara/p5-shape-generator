@@ -1,8 +1,14 @@
+const extraRotation = 30
 function hexagon(posX, posY, radius) {
-  const rotationAngle = 360 / 6
+  const rotationAngle = 360 / SIDES
   beginShape()
   for (let i = 0; i < 6; i++) {
-    const thisVertex = pointOnCircle(posX, posY, radius, i * rotationAngle)
+    const thisVertex = pointOnCircle(
+      posX,
+      posY,
+      radius,
+      i * rotationAngle + extraRotation
+    )
     vertex(thisVertex.x, thisVertex.y)
   }
   endShape(CLOSE)
@@ -25,4 +31,3 @@ function randomColor() {
 function randomWeight() {
   return coinFlip() ? 3 : 6
 }
-

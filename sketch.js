@@ -1,4 +1,4 @@
-const CRYSTAL_SIZE = 500
+const CRYSTAL_SIZE = 800
 const RADIUS = CRYSTAL_SIZE / 2
 const SIDES = 6
 let PALETTE = []
@@ -18,13 +18,27 @@ function setup() {
 
 function draw() {
   // simpleLines()
-  outlineShape()
-  circle()
+  // outlineShape()
+  // circles()
+  renderShapes()
+}
+
+function renderShapes() {
+  let randomNum = random(1)
+  if (randomNum > 0.5) squares()
+  randomNum = random(1)
+  if (randomNum > 0.2) simpleLines()
+  randomNum = random(1)
+  if (randomNum > 0.1) outlineShape()
+  randomNum = random(1)
+  if (randomNum > 0.2) circles()
 }
 
 function outlineShape() {
   stroke(randomColor())
   strokeWeight(randomWeight())
+  noFill()
+
   push()
   translate(width / 2, height / 2)
   coinFlip() ? ellipse(0, 0, CRYSTAL_SIZE, CRYSTAL_SIZE) : hexagon(0, 0, RADIUS)
@@ -55,13 +69,14 @@ function simpleLines() {
   pop()
 }
 
-function circle() {
-  const numberOfShapes = coinFlip() ? SIDES : SIDES * 2
+function circles() {
+  const numberOfShapes = SIDES
   const angle = 360 / numberOfShapes
   const sizeOfShape = RADIUS * 0.93
   const position = RADIUS - sizeOfShape / 2
 
   stroke(randomColor())
+  // strokeWeight(randomWeight())
   strokeWeight(randomWeight())
   noFill()
 
@@ -69,6 +84,26 @@ function circle() {
   translate(width / 2, height / 2)
   for (let i = 0; i < numberOfShapes; i++) {
     ellipse(position, 0, sizeOfShape, sizeOfShape)
+    rotate(angle)
+  }
+  pop()
+}
+
+function squares() {
+  const numberOfShapes = SIDES
+  const angle = 360 / numberOfShapes
+  const sizeOfShape = RADIUS * random(0.8)
+  const position = RADIUS - sizeOfShape / 2
+  const color = randomColor()
+  stroke(color)
+  // strokeWeight(randomWeight())
+  strokeWeight(randomWeight() * 2)
+  fill(color)
+
+  push()
+  translate(width / 2, height / 2)
+  for (let i = 0; i < numberOfShapes; i++) {
+    rect(0, position, sizeOfShape, sizeOfShape)
     rotate(angle)
   }
   pop()
